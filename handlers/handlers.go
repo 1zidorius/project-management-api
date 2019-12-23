@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"github.com/project-management-api/models"
-	"github.com/project-management-api/utils"
+	"github.com/1zidorius/project-management-api/models"
+	"github.com/1zidorius/project-management-api/utils"
 	"net/http"
 )
 

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/1zidorius/project-management-api/handlers"
 	"github.com/gorilla/mux"
-	"github.com/project-management-api/handlers"
 	"log"
 	"net/http"
 )
