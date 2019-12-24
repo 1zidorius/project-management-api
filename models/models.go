@@ -8,11 +8,11 @@ type Task struct {
 	Id        string    `json:"id,omitempty"`
 	Subject   string    `json:"subject,omitempty"`
 	Status    string    `json:"status,omitempty"`
-	Priority  string    `json:"priority,omitempty"`
+	Priority  int    `json:"priority,omitempty"`
 	CreatedOn time.Time `json:"createdOn,omitempty" bson:"createdOn"`
-	UpdatedOn time.Time `json:"updatedOn,omitempty" bson:"updatedOn"`
-	AddedBy   User      `json:"addedBy,omitempty"`
-	Assignee   User      `json:"assignee"`
+	UpdatedOn *time.Time `json:"updatedOn,omitempty" bson:"updatedOn"`
+	AddedBy   string      `json:"addedBy,omitempty"`
+	Assignee   string      `json:"assignee"`
 }
 
 type User struct {
