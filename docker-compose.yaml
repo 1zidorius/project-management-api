@@ -1,15 +1,16 @@
 version: '3'
 services:
-  api:
-    build: '.'
+  mongodb:
+    image: mongo:3.6
+    container_name: "mongodb"
+    volumes:
+      - ./data/db:/data/db
     ports:
-      - '8080:8080'
-#    depends_on:
-#      - 'mongo'
-#  mongo:
-#    image: 'mongo:latest'
-#    container_name: 'mongo'
-#    volumes:
-#      - /data/db:/data/db
-#    ports:
-#      - '27017:27017'
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+      #  api:
+      #    build: '.'
+      #    ports:
+#      - '8080:8080'
+  #    depends_on:
+  #      - 'mongo'
