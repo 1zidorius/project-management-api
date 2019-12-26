@@ -2,11 +2,12 @@ package dao
 
 import (
 	"context"
+	"fmt"
 	"github.com/1zidorius/project-management-api/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 	"log"
 )
 
@@ -15,7 +16,7 @@ const (
 	USERCOLLECTION     = "users"
 	tasksCollection    = "tasks"
 	projectsCollection = "projects"
-	URI                = "mongodb://admin:admin@localhost:27017"
+	URI                = "mongodb://localhost:27017"
 )
 
 var db *mongo.Database
@@ -34,11 +35,12 @@ func init() {
 }
 
 func CreateUser(user models.User) {
-	user.Id, _ = uuid.New()
+	user.Id = primitive.NewObjectID()
 	_, err := db.Collection(USERCOLLECTION).InsertOne(context.Background(), user)
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(user)
 }
 
 func GetAllUsers() []models.User {

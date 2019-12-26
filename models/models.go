@@ -1,7 +1,7 @@
 package models
 
 import (
-	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
 
@@ -17,10 +17,10 @@ type Task struct {
 }
 
 type User struct {
-	Id       uuid.UUID `json:"id,omitempty"`
-	Username string `json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
-	Email    string `json:"email,omitempty"`
-	Name     string `json:"name,omitempty"`
-	Surname  string `json:"surname,omitempty"`
+	Id       primitive.ObjectID `json:"id,omitempty" bson:"_id"`
+	Username string             `json:"username,omitempty"`
+	Password string             `json:"password,omitempty"`
+	Email    string             `json:"email,omitempty"`
+	Name     string             `json:"name,omitempty"`
+	Surname  string             `json:"surname,omitempty"`
 }
