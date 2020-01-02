@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/1zidorius/project-management-api/models"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -35,7 +34,8 @@ func init() {
 }
 
 func CreateUser(user models.User) {
-	user.Id = primitive.NewObjectID()
+	//user.Id = primitive.NewObjectID()
+	fmt.Println(user)
 	_, err := db.Collection(USERCOLLECTION).InsertOne(context.Background(), user)
 	if err != nil {
 		log.Fatal(err)
@@ -43,25 +43,27 @@ func CreateUser(user models.User) {
 	fmt.Println(user)
 }
 
-func GetAllUsers() []models.User {
+func GetAllUsers() []*models.ResultUser {
 	cur, err := db.Collection(USERCOLLECTION).Find(context.Background(), bson.D{{}}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	var users []models.User
-	var user models.User
+
+	users := make([]*models.ResultUser, 0)
 	for cur.Next(context.Background()) {
-		err := cur.Decode(user)
+		user := &models.ResultUser{}
+		err := cur.Decode(&user)
 		if err != nil {
 			log.Fatal(err)
 		}
-		//user.Id.Hex()
 		users = append(users, user)
 	}
 	if err := cur.Err(); err != nil {
 		log.Fatal(err)
 	}
+
 	cur.Close(context.Background())
+
 	return users
 }
 
@@ -72,11 +74,11 @@ func DeleteUser(user models.User) {
 	}
 }
 
-func UpdateUser(user models.User) {
+func UpdateUser(user models.User) error {
 	filter := bson.M{"id": user.Id}
 	update := bson.M{"$set": bson.M{"password": user.Password, "email": user.Email, "name": user.Name, "surname": user.Surname}}
 	_, err := db.Collection(USERCOLLECTION).UpdateOne(context.Background(), filter, update)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 }

@@ -16,6 +16,12 @@ type Task struct {
 	Assignee  string     `json:"assignee"`
 }
 
+type ResultUser struct {
+	Id      primitive.ObjectID `json:"id,omitempty" bson:"_id"`
+	Name    string             `json:"name,omitempty"`
+	Surname string             `json:"surname,omitempty"`
+}
+
 type User struct {
 	Id       primitive.ObjectID `json:"id,omitempty" bson:"_id"`
 	Username string             `json:"username,omitempty"`
