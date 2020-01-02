@@ -18,6 +18,19 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("hello student!"))
 }
 
+func GetUsersHandlers(w http.ResponseWriter, r *http.Request)  {
+	payload := dao.GetAllUsers()
+	response, err := json.Marshal(payload)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(response))
+
+}
+
 func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	payload := dao.GetAllUsers()

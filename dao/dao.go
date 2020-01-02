@@ -55,6 +55,7 @@ func GetAllUsers() []models.User {
 		if err != nil {
 			log.Fatal(err)
 		}
+		//user.Id.Hex()
 		users = append(users, user)
 	}
 	if err := cur.Err(); err != nil {
