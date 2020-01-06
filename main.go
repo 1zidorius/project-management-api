@@ -19,7 +19,7 @@ func main() {
 	router.HandleFunc("/api/v1/tasks", handlers.CreateTaskHandler).Methods("POST")
 	//TODO: router.HandleFunc("/api/v1/tasks/{project-id}", handlers.GetAllTasksHandler).Methods("GET")
 	//TODO: router.HandleFunc("/api/v1/tasks/{id}", handlers.GetTaskHandler).Methods("GET")
-	//TODO: router.HandleFunc("/api/v1/tasks/{id}", handlers.UpdateTaskHandler).Methods("PUT")
+	router.HandleFunc("/api/v1/tasks/{id}", handlers.UpdateTaskHandler).Methods("PUT")
 	//TODO: router.HandleFunc("/api/v1/tasks/{id}", handlers.DeleteTaskHandler).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8080", router))
 
