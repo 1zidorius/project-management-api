@@ -115,14 +115,37 @@ func GetUser(id primitive.ObjectID) (models.User, error) {
 	return user, nil
 }
 
-//func CreateTask(task models.Task) (models.Task, error) {
-//	task.Id = primitive.NewObjectID()
-//	task.CreatedOn = time.Now()
-//	task.AddedBy = addedBy
-//	_, err := db.Collection(USERCOLLECTION).InsertOne(context.Background(), user)
-//	if err != nil {
-//		return user, err
-//	}
-//	return user, nil
-//}
+func CreateTask(task models.Task) (models.Task, error) {
+	task.Id = primitive.NewObjectID()
+	task.CreatedOn = time.Now()
+	_, err := db.Collection(TASKSCOLECCTION).InsertOne(context.Background(), task)
+	if err != nil {
+		return task, err
+	}
+	return task, err
+}
 
+func UpdateTask(id primitive.ObjectID, task models.Task) (models.Task, error) {
+	var t models.Task
+	filter := bson.M{"_id": id}
+	_ = db.Collection(USERCOLLECTION).FindOne(context.Background(), filter).Decode(&t)
+	if task.Subject != "" {
+		t.Subject = task.Subject
+	}
+	if task.Priority == 0 {
+	//https://stackoverflow.com/questions/38511526/check-empty-float-or-integer-value-in-golang
+		t.Priority = task.Priority
+	}
+	if task.Status != "" {
+		t.Status = task.Status
+	}
+	if task.Assignee.String() != "" {
+		t.Assignee = task.Assignee
+	}
+	update := bson.M{"$set": bson.M{"subject": t.Subject, "priority": t.Priority, "status": t.Status, "assignee": t.Assignee}}
+	_, err := db.Collection(TASKSCOLECCTION).UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		return task, err
+	}
+	return task, nil
+}

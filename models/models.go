@@ -11,9 +11,9 @@ type Task struct {
 	Status    string             `json:"status,omitempty"`
 	Priority  int                `json:"priority,omitempty"`
 	CreatedOn time.Time          `json:"createdOn,omitempty" bson:"createdOn"`
-	UpdatedOn *time.Time         `json:"updatedOn,omitempty" bson:"updatedOn"`
+	UpdatedOn time.Time         `json:"updatedOn,omitempty" bson:"updatedOn,omitempty"`
 	AddedBy   primitive.ObjectID `json:"addedBy,omitempty"`
-	Assignee  primitive.ObjectID `json:"assignee"`
+	Assignee  primitive.ObjectID `json:"assignee,omitempty" bson:"assignee,omitempty"`
 }
 
 type ResultUser struct {
