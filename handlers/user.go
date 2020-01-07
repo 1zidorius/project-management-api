@@ -10,12 +10,6 @@ import (
 	"net/http"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("hello world!"))
-}
-
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("Content-Type") != "application/json" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -105,51 +99,4 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "", http.StatusNotFound)
 		return
 	}
-}
-
-func CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Content-Type") != "application/json" {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	r.Body = http.MaxBytesReader(w, r.Body, 1048576)
-	dec := json.NewDecoder(r.Body)
-	dec.DisallowUnknownFields()
-	task := models.Task{}
-	err := dec.Decode(&task)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	task, err = dao.CreateTask(task)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(task)
-}
-
-func UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Content-Type") != "application/json" {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	params := mux.Vars(r)
-	id, err := primitive.ObjectIDFromHex(params["id"])
-	if err != nil {
-		log.Println(err)
-	}
-
-	dec := json.NewDecoder(r.Body)
-	dec.DisallowUnknownFields()
-	task := models.Task{}
-	err = dec.Decode(&task)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	response, err := dao.UpdateTask(id, task)
-	if err != nil {
-		http.Error(w, "", http.StatusNotFound)
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
 }
